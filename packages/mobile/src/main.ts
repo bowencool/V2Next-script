@@ -242,11 +242,7 @@ function run() {
         if (cells[1].id) {
           repliesMap.push({i: pageNo, replyList: this.parsePageReplies(cells.slice(1))})
           let replyList = functions.getAllReply(repliesMap)
-          post.replyList = replyList
-          post.replyCount = replyList.length
-          post.allReplyUsers = Array.from(new Set(replyList.map((v: any) => v.username)))
-          post.nestedReplies = functions.createNestedList(replyList)
-          post.nestedRedundReplies = functions.createNestedRedundantList(replyList)
+          functions.createList(post, replyList)
           post.nestedReplies.map((v) => {
             post.replyList[Number(v.floor) - 1].replyCount = v.replyCount
           })
@@ -270,11 +266,7 @@ function run() {
 
                 results.filter((result) => result.status === "fulfilled").map(v => repliesMap.push(v.value))
                 let replyList = functions.getAllReply(repliesMap)
-                post.replyList = replyList
-                post.replyCount = replyList.length
-                post.allReplyUsers = Array.from(new Set(replyList.map((v: any) => v.username)))
-                post.nestedReplies = functions.createNestedList(replyList)
-                post.nestedRedundReplies = functions.createNestedRedundantList(replyList)
+                functions.createList(post, replyList)
                 post.nestedReplies.map((v) => {
                   post.replyList[Number(v.floor) - 1].replyCount = v.replyCount
                 })
