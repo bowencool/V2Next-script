@@ -540,6 +540,10 @@ export default {
     showPost() {
       this.show = true
       $(`#Wrapper #Main .box:lt(3)`).each(function () {
+        if (this.id === 'topic-tip-box' || this.querySelector('#topic-tip-box')) {
+          $(this).show()
+          return
+        }
         $(this).hide()
       })
     },
@@ -1066,4 +1070,3 @@ export default {
   }
 }
 </style>
-

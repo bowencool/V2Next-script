@@ -81,6 +81,7 @@
               :api-url="'topic/'+post.id"/>
           </Toolbar>
         </div>
+        <div ref="topicTipMount" class="topic-tip-mount"></div>
 
         <div class="my-box" v-if="post.topReplyList.length && config.showTopReply">
           <div class="my-cell flex " @click.stop="collapseTopReplyList">
@@ -512,6 +513,7 @@ export default {
           this.$refs?.detail?.scrollTo({top: 0})
         })
       }
+      this.moveTopicTipBox()
     },
     'post.headerTemplate'(n, o) {
       let mountEl = document.querySelector('.main-wrapper .post-wrapper .html-wrapper .header')
@@ -527,6 +529,7 @@ export default {
           this.currentFloor = ''
           nextTick(() => {
             this.$refs?.main?.focus()
+            this.moveTopicTipBox()
           })
         } else {
           this.isSticky = false
@@ -537,6 +540,7 @@ export default {
   },
   mounted() {
     nextTick(() => {
+      this.moveTopicTipBox()
       setTimeout(() => {
         this.postDetailWidth = this.$refs.mainWrapper?.getBoundingClientRect().width || 0
       }, 500)
@@ -582,6 +586,14 @@ export default {
     eventBus.off(CMD.SHOW_CALL)
   },
   methods: {
+    moveTopicTipBox() {
+      nextTick(() => {
+        let topicTipBox = document.querySelector('#topic-tip-box')
+        if (!topicTipBox || !this.$refs.topicTipMount) return
+        this.$refs.topicTipMount.appendChild(topicTipBox)
+        topicTipBox.style.display = ''
+      })
+    },
     addTag() {
       eventBus.emit(CMD.ADD_TAG, this.post.member.username)
     },
@@ -976,6 +988,17 @@ export default {
               display: inline-block;
             }
           }
+        }
+      }
+
+      .topic-tip-mount {
+        width: 100%;
+        margin-bottom: 2rem;
+
+        :deep(#topic-tip-box) {
+          width: 100%;
+          margin: 0;
+          box-sizing: border-box;
         }
       }
 
